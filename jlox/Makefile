@@ -1,17 +1,23 @@
-JAVAC    = javac
-JAR      = jar
-SRC_PATH = com/interpreter/jlox
-SRCS     = $(wildcard $(SRC_PATH)*.java)
+JAR         = jar
+JAVAC       = javac
+SRCS        = $(wildcard $(SRC_PATH)*.java)
+SRC_PATH    = com/interpreter/jlox
+TOOLS_PATH  = com/interpreter/tools
 
 all: build
 
 build: $(SRCS)
 	$(JAVAC) $(SRC_PATH)/*.java 
-	$(JAR) cmvf META-INF/MANIFEST.MF jlox.jar $(SRC_PATH)/*.class
+	$(JAR) cmvf META-INF/MANIFEST.MF bin/jlox.jar $(SRC_PATH)/*.class
 
+tools:
+	$(JAVAC) $(TOOLS_PATH)/*.java
+	$(JAR) cmvf META-INF/TOOLS-MANIFEST.MF bin/generate_ast.jar $(TOOLS_PATH)/*.class
+	
 run:
-	java -jar jlox.jar
+	java -jar bin/jlox.jar
 
 clean:
 	rm -f com/interpreter/jlox/*.class
-	rm -f jlox.jar
+	rm -f com/interpreter/tools/*.class
+	rm -f bin/{jlox.jar,generate_ast.jar}
